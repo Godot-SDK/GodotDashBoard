@@ -24,15 +24,22 @@ text = "Godot1.0"
 
 [node name="download" type="Button" parent="."]
 margin_left = 134.0
-margin_right = 186.0
+margin_right = 268.0
 margin_bottom = 45.0
 custom_fonts/font = ExtResource( 2 )
-text = "下载"
+text = "github源下载"
+
+[node name="download2" type="Button" parent="."]
+margin_left = 272.0
+margin_right = 424.0
+margin_bottom = 45.0
+custom_fonts/font = ExtResource( 2 )
+text = "比邻云盘源下载"
 
 [node name="status" type="Label" parent="."]
-margin_left = 190.0
+margin_left = 428.0
 margin_top = 8.0
-margin_right = 190.0
+margin_right = 428.0
 margin_bottom = 36.0
 custom_fonts/font = ExtResource( 2 )
 

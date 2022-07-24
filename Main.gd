@@ -49,10 +49,15 @@ func _on_aar_lib_standard_pressed():
 		var LineInstance = aar_line.instance()
 		LineInstance.get_node("version").text = key
 		var download_button = LineInstance.get_node("download")
+		var download_bilin = LineInstance.get_node("download2")
 		download_button.connect("pressed",LineInstance,"_on_download_pressed",[url])
 		
+#		for key2 in bilinScript.aar_url:
+#			var url2 = bilinScript.aar_url[key2]
+#			download_bilin.connect("pressed",LineInstance,"_on_download_pressed",[url])
+#
 		DownLoadPage.get_node("Root").add_child(LineInstance)
-		
+	
 	var tip_mux = Button.new()
 	tip_mux.set("custom_fonts/font",load("res://font20.tres"))
 	tip_mux.text = "下载其他版本"

@@ -10,6 +10,11 @@ config_version=4
 
 _global_script_classes=[ {
 "base": "Reference",
+"class": "BiLinRepo",
+"language": "GDScript",
+"path": "res://RepoScript/bilin.gd"
+}, {
+"base": "Reference",
 "class": "GitHubRepo",
 "language": "GDScript",
 "path": "res://RepoScript/github.gd"
@@ -30,6 +35,7 @@ _global_script_classes=[ {
 "path": "res://RepoScript/tmux.gd"
 } ]
 _global_script_class_icons={
+"BiLinRepo": "",
 "GitHubRepo": "",
 "GiteeRepo": "",
 "ItchRepo": "",
