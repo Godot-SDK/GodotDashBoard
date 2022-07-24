@@ -18,6 +18,7 @@ onready var giteeScript = load("res://RepoScript/gitee.gd").new()
 onready var itchScript = load("res://RepoScript/itch.gd").new()
 
 func _ready():
+	init_editor_dir()
 	GodotCN.connect("gui_input",self,"jump",[GodotCN])
 	Godott.connect("gui_input",self,"jump",[Godott])
 	GodotPro.connect("gui_input",self,"jump",[GodotPro])
@@ -30,6 +31,19 @@ func _ready():
 	connect_tween()
 	pass 
 	
+func init_editor_dir():
+	var exe_dir = OS.get_executable_path().get_base_dir()
+	var editor_dir_path = exe_dir + "/editor"
+	var editor_dir = Directory.new()
+	if not editor_dir.dir_exists(editor_dir_path):
+		editor_dir.make_dir(editor_dir_path)
+		var file = File.new()
+		var err = file.open(editor_dir_path + "/__sc__",File.WRITE)
+		file.store_line(" ")
+		file.close()
+		if err != OK:
+			printerr("创建__sc__文件失败！")
+			
 func connect_left_bar():
 	var leftBarGroup = $EditorManage.group
 	var err = leftBarGroup.connect("pressed",self,"_on_left_bar_pressed")
