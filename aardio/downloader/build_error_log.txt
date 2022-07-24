@@ -1,0 +1,9 @@
+﻿错误发生在文件---------------:
+D:\Desktop\work\GodotDashBoard\aardio\downloader\main.aardio
+错误信息---------------:
+
+{Error}:
+{Line}:#52
+{File}:D:\Desktop\work\GodotDashBoard\aardio\downloader\main.aardio
+{Error}:<unexpected symbol>
+{Near}:'*'
