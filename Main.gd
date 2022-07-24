@@ -1,6 +1,7 @@
 extends Node2D
 
-onready var click_tween = $ClickTween
+onready var click_down_tween = $ClickDownTween
+onready var click_up_tween = $ClickUPTween
 onready var GodotCN = $MainPanel/she_qu/GodoterCN
 onready var Godott = $MainPanel/she_qu/Godott
 onready var GodotPro = $MainPanel/she_qu/GodotPro
@@ -26,7 +27,7 @@ func _ready():
 func connect_left_bar():
 	var leftBarGroup = $EditorManage.group
 	var err = leftBarGroup.connect("pressed",self,"_on_left_bar_pressed")
-	print_debug(leftBarGroup)
+	#print_debug(leftBarGroup)
 	#print_debug(err)
 	pass
 	
@@ -38,7 +39,7 @@ func _on_left_bar_pressed(button):
 	if button.name == "ThirdPartySheQu":
 		show_shequ()
 		$MainPanel/tip_choose.hide()
-	print_debug(button)
+	#print_debug(button)
 	pass
 func connect_repo_buttons():
 	for node in $repo_source.get_children():
@@ -79,27 +80,30 @@ func _on_EditorManage_pressed():
 	
 #连接磁贴tween
 func connect_tween():
-	click_tween.connect("tween_completed",self,"tween_completed")
+	click_up_tween.connect("tween_completed",self,"tween_completed")
 	pass
 
 func tween_completed(object,key):
 	if object.name == "GodoterCN":
 		OS.shell_open("https://godoter.cn")
+		pass
 	if object.name == "Godott":
 		OS.shell_open("http://godott.com")
+		pass
 	if object.name == "GodotPro":
 		OS.shell_open("https://godot.pro/")
+		pass
+	#print_debug("tween执行完毕 ",object,key)
 	pass
 	
 #每一个磁贴点击时都会触发
 func jump(event,node):
 	if event is InputEventMouseButton and event.pressed and event.button_index == BUTTON_LEFT:
-		click_tween.interpolate_property(node, "rect_scale",Vector2(1, 1), Vector2(0.9, 0.9), 0.1,Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
-		click_tween.start()
+		click_down_tween.interpolate_property(node, "rect_scale",Vector2(1, 1), Vector2(0.9, 0.9), 0.1,Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+		click_down_tween.start()
 	if event is InputEventMouseButton and not event.pressed and event.button_index == BUTTON_LEFT:
-		click_tween.interpolate_property(node, "rect_scale",Vector2(0.9, 0.9), Vector2(1, 1), 0.1,Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
-		click_tween.start()
-		
+		click_up_tween.interpolate_property(node, "rect_scale",Vector2(0.9, 0.9), Vector2(1, 1), 0.1,Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+		click_up_tween.start()
 	pass
 	
 func jump_engine():

@@ -153,7 +153,9 @@ __meta__ = {
 "_edit_lock_": true
 }
 
-[node name="ClickTween" type="Tween" parent="."]
+[node name="ClickDownTween" type="Tween" parent="."]
+
+[node name="ClickUPTween" type="Tween" parent="."]
 
 [node name="repo_source" type="VBoxContainer" parent="."]
 margin_left = 878.0
