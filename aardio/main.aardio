@@ -1,0 +1,12 @@
+import console;
+import sys;
+import io;
+import fsys;
+import fsys.file;
+io.open()
+console.setTitle("获取系统用户名");
+var username = sys.getUserName()
+var file = fsys.file("username.txt","w+")
+file.write(username)
+//console.log(io.stdout)
+//console.pause()
