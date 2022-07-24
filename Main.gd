@@ -11,11 +11,16 @@ onready var SheQuRoot = $MainPanel/she_qu
 onready var engine = $engine
 onready var GodotDataButton = $GodotDataButton
 onready var DownLoadPage = $MainPanel/DownLoadPage
+onready var AARLibStand = $AARLibaryStandard
+
 onready var line = load("res://line.tscn")
+onready var aar_line = load("res://aar_line.tscn")
 
 onready var tmuxScript = load("res://RepoScript/tmux.gd").new()
+onready var githubScript = load("res://RepoScript/github.gd").new()
 onready var giteeScript = load("res://RepoScript/gitee.gd").new()
 onready var itchScript = load("res://RepoScript/itch.gd").new()
+
 
 func _ready():
 	init_editor_dir()
@@ -29,8 +34,31 @@ func _ready():
 	connect_left_bar()
 	connect_repo_buttons()
 	connect_tween()
+	connect_aar_button()
 	pass 
+func connect_aar_button():
+	#重构
+	AARLibStand.connect("pressed",self,"_on_aar_lib_standard_pressed")
+	pass
 	
+func _on_aar_lib_standard_pressed():
+	clean_up_DownloadPage()
+	for key in githubScript.aar_url:
+		#url
+		var url = githubScript.aar_url[key]
+		var LineInstance = aar_line.instance()
+		LineInstance.get_node("version").text = key
+		var download_button = LineInstance.get_node("download")
+		download_button.connect("pressed",LineInstance,"_on_download_pressed",[url])
+		
+		DownLoadPage.get_node("Root").add_child(LineInstance)
+		
+	var tip_mux = Button.new()
+	tip_mux.set("custom_fonts/font",load("res://font20.tres"))
+	tip_mux.text = "下载其他版本"
+	tip_mux.connect("pressed",self,"goto_tmux")
+	DownLoadPage.get_node("Root").add_child(tip_mux)
+	pass
 func init_editor_dir():
 	var exe_dir = OS.get_executable_path().get_base_dir()
 	var editor_dir_path = exe_dir + "/editor"

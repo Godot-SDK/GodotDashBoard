@@ -1,3 +1,4 @@
 dist/
 python/
 aardio/dist
+*.exe

@@ -156,6 +156,26 @@ toggle_mode = true
 group = ExtResource( 6 )
 text = "编辑器管理"
 
+[node name="AARLibaryStandard" type="Button" parent="."]
+margin_left = 8.0
+margin_top = 18.0
+margin_right = 227.0
+margin_bottom = 52.0
+custom_fonts/font = SubResource( 1 )
+group = ExtResource( 6 )
+text = "AAR library(standard)"
+
+[node name="AARLibaryMono" type="Button" parent="."]
+visible = false
+margin_left = 4.0
+margin_top = 40.0
+margin_right = 210.0
+margin_bottom = 74.0
+custom_fonts/font = SubResource( 1 )
+toggle_mode = true
+group = ExtResource( 6 )
+text = "AAR library(stanard)"
+
 [node name="engine" type="Button" parent="."]
 margin_left = 8.0
 margin_top = 176.0
