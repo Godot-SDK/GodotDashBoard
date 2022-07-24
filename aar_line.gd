@@ -14,7 +14,7 @@ func _on_download_pressed(url):
 	print_debug("开始下载！")
 	print_debug(url)
 	var output = []
-	OS.execute(Global.exe_dir + "/downloader.exe",[url],false,output)
+	OS.execute(Global.exe_dir + "/downloader.exe",["aar",url],false,output)
 	print_debug(output)
 	pass
 

@@ -37,11 +37,13 @@ custom_fonts/font = ExtResource( 2 )
 text = "下载64位"
 
 [node name="status" type="Label" parent="."]
+visible = false
 margin_left = 360.0
 margin_top = 18.0
-margin_right = 360.0
+margin_right = 449.0
 margin_bottom = 46.0
 custom_fonts/font = ExtResource( 2 )
+text = "下载中0 B"
 
 [node name="HTTPRequest" type="HTTPRequest" parent="."]
 use_threads = true
