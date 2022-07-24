@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Alibaba-PuHuiTi-Regular.otf" type="DynamicFontData" id=1]
 [ext_resource path="res://font40.tres" type="DynamicFont" id=2]
@@ -6,10 +6,20 @@
 [ext_resource path="res://font20.tres" type="DynamicFont" id=4]
 [ext_resource path="res://software_source.tres" type="ButtonGroup" id=5]
 [ext_resource path="res://leftBar.tres" type="ButtonGroup" id=6]
+[ext_resource path="res://DownLoadPage.gd" type="Script" id=8]
 
 [sub_resource type="DynamicFont" id=2]
 size = 20
 font_data = ExtResource( 1 )
+
+[sub_resource type="StyleBoxFlat" id=4]
+bg_color = Color( 0.517647, 0.705882, 0.807843, 1 )
+
+[sub_resource type="StyleBoxFlat" id=5]
+bg_color = Color( 0.0862745, 0.513726, 0.745098, 1 )
+
+[sub_resource type="StyleBoxFlat" id=3]
+bg_color = Color( 0.0862745, 0.513726, 0.745098, 1 )
 
 [sub_resource type="DynamicFont" id=1]
 size = 20
@@ -107,6 +117,35 @@ text = "godot.pro"
 align = 1
 valign = 1
 
+[node name="AddEditor" type="Button" parent="MainPanel"]
+margin_left = 617.0
+margin_top = 433.0
+margin_right = 749.0
+margin_bottom = 467.0
+custom_fonts/font = ExtResource( 4 )
+text = "添加本地版本"
+
+[node name="Download" type="Button" parent="MainPanel"]
+visible = false
+margin_left = 617.0
+margin_top = 433.0
+margin_right = 749.0
+margin_bottom = 467.0
+custom_fonts/font = ExtResource( 4 )
+custom_styles/hover = SubResource( 4 )
+custom_styles/pressed = SubResource( 5 )
+custom_styles/normal = SubResource( 3 )
+text = "下载编辑器"
+
+[node name="DownLoadPage" type="ScrollContainer" parent="MainPanel"]
+margin_top = 5.0
+margin_right = 617.0
+margin_bottom = 467.0
+scroll_horizontal_enabled = false
+script = ExtResource( 8 )
+
+[node name="Root" type="VBoxContainer" parent="MainPanel/DownLoadPage"]
+
 [node name="EditorManage" type="Button" parent="."]
 margin_left = 8.0
 margin_top = 80.0
@@ -158,6 +197,7 @@ __meta__ = {
 [node name="ClickUPTween" type="Tween" parent="."]
 
 [node name="repo_source" type="VBoxContainer" parent="."]
+visible = false
 margin_left = 878.0
 margin_top = 138.0
 margin_right = 1017.0

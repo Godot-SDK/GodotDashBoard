@@ -8,6 +8,28 @@
 
 config_version=4
 
+_global_script_classes=[ {
+"base": "Reference",
+"class": "GiteeRepo",
+"language": "GDScript",
+"path": "res://RepoScript/gitee.gd"
+}, {
+"base": "Reference",
+"class": "ItchRepo",
+"language": "GDScript",
+"path": "res://RepoScript/itch.gd"
+}, {
+"base": "Reference",
+"class": "TmuxRepo",
+"language": "GDScript",
+"path": "res://RepoScript/tmux.gd"
+} ]
+_global_script_class_icons={
+"GiteeRepo": "",
+"ItchRepo": "",
+"TmuxRepo": ""
+}
+
 [application]
 
 config/name="GodotDashBoard"

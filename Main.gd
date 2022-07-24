@@ -10,6 +10,12 @@ onready var SheQuButton = $ThirdPartySheQu
 onready var SheQuRoot = $MainPanel/she_qu
 onready var engine = $engine
 onready var GodotDataButton = $GodotDataButton
+onready var DownLoadPage = $MainPanel/DownLoadPage
+onready var line = load("res://line.tscn")
+
+onready var tmuxScript = load("res://RepoScript/tmux.gd").new()
+onready var giteeScript = load("res://RepoScript/gitee.gd").new()
+onready var itchScript = load("res://RepoScript/itch.gd").new()
 
 func _ready():
 	GodotCN.connect("gui_input",self,"jump",[GodotCN])
@@ -34,11 +40,15 @@ func connect_left_bar():
 func _on_left_bar_pressed(button):
 	if button.name == "EditorManage":
 		hide_shequ()
+		DownLoadPage.show()
 		$MainPanel/tip_choose.show()
+		show_repo()
 		pass
 	if button.name == "ThirdPartySheQu":
+		hide_repo()
 		show_shequ()
 		$MainPanel/tip_choose.hide()
+		DownLoadPage.hide()
 	#print_debug(button)
 	pass
 func connect_repo_buttons():
@@ -46,23 +56,86 @@ func connect_repo_buttons():
 		node.connect("pressed",self,"cancel_tip",[node])
 	pass
 	
+func show_repo():
+	$repo_source.show()
+	pass
+func hide_repo():
+	$repo_source.hide()
+	
+func clean_up_DownloadPage():
+	for childs in DownLoadPage.get_node("Root").get_children():
+		childs.queue_free()
+	pass
+#这里的需要重命名
+#此处用于处理右侧的软件源按钮事件
 func cancel_tip(node):
 	#https://api.github.com/repos/godotengine/godot/releases 查询所有发布的版本
 	#https://api.github.com/repos/godotengine/godot/releases/latest 查询最新版本
 	$MainPanel/tip_choose.hide()
 	if node.name == "offical":
 		#print_debug("开始请求")
+# warning-ignore:return_value_discarded
 		OS.shell_open("https://godotengine.org/download")
 		#$HTTPRequest.request("https://api.github.com/repos/godotengine/godot/releases",[],true,HTTPClient.METHOD_GET)
 	if node.name == "itch":
-		OS.shell_open("https://godotengine.itch.io/godot")
+# warning-ignore:return_value_discarded
+		clean_up_DownloadPage()
+		var tip_itch = Label.new()
+		tip_itch.set("custom_fonts/font",load("res://font20.tres"))
+		tip_itch.text = itchScript.repo_info
+		
+		var tip_link = Button.new()
+		tip_link.text = "ItchRepo"
+		tip_link.connect("pressed",self,"goto_itch")
+		
+		DownLoadPage.get_node("Root").add_child(tip_itch)
+		DownLoadPage.get_node("Root").add_child(tip_link)
+		
 	if node.name == "github":
+# warning-ignore:return_value_discarded
 		OS.shell_open("https://github.com/godotengine/godot")
 	if node.name == "gitee":
-		OS.shell_open("https://gitee.com/mirrors/godot")
+# warning-ignore:return_value_discarded
+		clean_up_DownloadPage()
+		DownLoadPage.show()
+		var tip_gitee = Label.new()
+		tip_gitee.set("custom_fonts/font",load("res://font20.tres"))
+		tip_gitee.text = GiteeRepo.repo_info
+		
+		var tip_link = Button.new()
+		tip_link.text = "Gitee"
+		tip_link.connect("pressed",self,"goto_gitee")
+		
+		DownLoadPage.get_node("Root").add_child(tip_gitee)
+		DownLoadPage.get_node("Root").add_child(tip_link)
 	if node.name == "tmux":
-		OS.shell_open("https://downloads.tuxfamily.org/godotengine")
+		clean_up_DownloadPage()
+		DownLoadPage.show()
+		#$MainPanel/DownLoadPage/Root/tip_tmux.show()
+		for key in tmuxScript.urls:
+			#url
+			var x86 = tmuxScript.urls[key]["32bit"]
+			var x64 = tmuxScript.urls[key]["64bit"]
+			#print_debug(x86)
+			#print_debug(x64)
+			var LineInstance = line.instance()
+			LineInstance.get_node("version").text = key
+			var download_button_32 = LineInstance.get_node("32")
+			var download_button_64 = LineInstance.get_node("64")
+			
+			download_button_32.connect("pressed",LineInstance,"_on_button_32_pressed",[x86])
+			download_button_64.connect("pressed",LineInstance,"_on_button_32_pressed",[x64])
+			
+			DownLoadPage.get_node("Root").add_child(LineInstance)
+			
+		var tip_mux = Button.new()
+		tip_mux.set("custom_fonts/font",load("res://font20.tres"))
+		tip_mux.text = "下载其他版本"
+		tip_mux.connect("pressed",self,"goto_tmux")
+		DownLoadPage.get_node("Root").add_child(tip_mux)
+		#OS.shell_open("https://downloads.tuxfamily.org/godotengine")
 	if node.name == "GodotSDK":
+# warning-ignore:return_value_discarded
 		OS.shell_open("https://github.com/Godot-SDK")
 		
 func _on_get_complete(result, response_code, headers, body):
@@ -136,4 +209,11 @@ func show_data():
 			print_debug("无法打开文件夹")
 	pass
 
-
+func goto_tmux():
+	OS.shell_open("https://downloads.tuxfamily.org/godotengine")
+	pass
+	
+func goto_gitee():
+	OS.shell_open("https://gitee.com/mirrors/godot")
+func goto_itch():
+	OS.shell_open("https://godotengine.itch.io/godot")
