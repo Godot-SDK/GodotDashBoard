@@ -32,7 +32,6 @@ func _ready():
 	SheQuButton.connect("pressed",self,"show_shequ")
 	engine.connect("pressed",self,"jump_engine")
 	GodotDataButton.connect("pressed",self,"show_data")
-	#$HTTPRequest.connect("request_completed",self,"_on_get_complete")
 	EditorManage.connect("pressed",self,"show_editor_manage")
 	connect_left_bar()
 	connect_repo_buttons()
@@ -54,11 +53,7 @@ func _on_aar_lib_standard_pressed():
 		var download_button = LineInstance.get_node("download")
 		var download_bilin = LineInstance.get_node("download2")
 		download_button.connect("pressed",LineInstance,"_on_download_pressed",[url])
-		
-#		for key2 in bilinScript.aar_url:
-#			var url2 = bilinScript.aar_url[key2]
-#			download_bilin.connect("pressed",LineInstance,"_on_download_pressed",[url])
-#
+
 		DownLoadPage.get_node("Root").add_child(LineInstance)
 	
 	var tip_mux = Button.new()
@@ -67,6 +62,7 @@ func _on_aar_lib_standard_pressed():
 	tip_mux.connect("pressed",self,"goto_tmux")
 	DownLoadPage.get_node("Root").add_child(tip_mux)
 	pass
+	
 func init_editor_dir():
 	var exe_dir = OS.get_executable_path().get_base_dir()
 	var editor_dir_path = exe_dir + "/editor"
@@ -249,14 +245,6 @@ func cancel_tip(node):
 # warning-ignore:return_value_discarded
 		OS.shell_open("https://github.com/Godot-SDK")
 		
-func _on_get_complete(result, response_code, headers, body):
-	print_debug("请求结束")
-	#print_debug(result)
-	#print_debug(response_code)
-	print_debug(headers)
-	print_debug(body)
-	pass
-	
 func _on_EditorManage_pressed():
 	$repo_source.show()
 	$MainPanel/tip_choose.show()
