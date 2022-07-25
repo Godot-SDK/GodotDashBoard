@@ -122,7 +122,6 @@ func show_editor_manage():
 		print_debug("完整路径:",full_exe_path)
 		pop.connect("id_pressed",LineInstance,"_on_Menu_changed",[full_exe_path])
 		DownLoadPage.get_node("Root").add_child(LineInstance)
-		
 	pass
 	
 func get_downloaded_editors() -> Array:

@@ -1,4 +1,5 @@
 extends HBoxContainer
+onready var SceneRoot = get_tree().current_scene.get_node(".")
 
 func _ready():
 	pass 
@@ -20,6 +21,7 @@ func _on_Menu_changed(id,editor_path:String):
 		pass
 	if item == "卸载":
 		uninstall(editor_path)
+		refresh_layout()
 		pass
 	#print_debug(item)
 	pass
@@ -30,4 +32,7 @@ func uninstall(p_editor):
 		printerr("卸载出错！")
 	print_debug(p_editor,"卸载完成")
 	pass
-
+	
+func refresh_layout():
+	SceneRoot.show_editor_manage()
+	pass
