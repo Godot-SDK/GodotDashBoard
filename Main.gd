@@ -97,6 +97,7 @@ func _on_left_bar_pressed(button):
 		DownLoadPage.hide()
 	#print_debug(button)
 	pass
+	
 func connect_repo_buttons():
 	for node in $repo_source.get_children():
 		node.connect("pressed",self,"cancel_tip",[node])
@@ -140,6 +141,7 @@ func get_downloaded_editors() -> Array:
 		printerr("尝试访问路径时出错。")
 	return exe_files
 	pass
+	
 func hide_repo():
 	$repo_source.hide()
 	
@@ -147,6 +149,7 @@ func clean_up_DownloadPage():
 	for childs in DownLoadPage.get_node("Root").get_children():
 		childs.queue_free()
 	pass
+	
 #这里的需要重命名
 #此处用于处理右侧的软件源按钮事件
 func cancel_tip(node):
