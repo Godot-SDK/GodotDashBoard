@@ -18,6 +18,9 @@ func _on_button_32_pressed(url):
 	pass
 	
 func _on_button_64_pressed(url):
+	print_debug("开始下载！")
 	print_debug(url)
-
+	var output = []
+	OS.execute(Global.exe_dir + "/downloader.exe",["editor",url],false,output)
+	print_debug(output)
 	pass

@@ -121,23 +121,31 @@ func cancel_tip(node):
 	$MainPanel/tip_choose.hide()
 	if node.name == "offical":
 		#print_debug("开始请求")
-# warning-ignore:return_value_discarded
+		# warning-ignore:return_value_discarded
 		OS.shell_open("https://godotengine.org/download")
 		#$HTTPRequest.request("https://api.github.com/repos/godotengine/godot/releases",[],true,HTTPClient.METHOD_GET)
 	if node.name == "itch":
-# warning-ignore:return_value_discarded
 		clean_up_DownloadPage()
-		var tip_itch = Label.new()
+		for key in itchScript.itch_url:
+			var x86 = itchScript.itch_url[key]["32bit"]
+			var x64 = itchScript.itch_url[key]["64bit"]
+			#print_debug(x86)
+			#print_debug(x64)
+			var LineInstance = line.instance()
+			LineInstance.get_node("version").text = key
+			var download_button_32 = LineInstance.get_node("32")
+			var download_button_64 = LineInstance.get_node("64")
+
+			download_button_32.connect("pressed",LineInstance,"_on_button_32_pressed",[x86])
+			download_button_64.connect("pressed",LineInstance,"_on_button_32_pressed",[x64])
+			
+			DownLoadPage.get_node("Root").add_child(LineInstance)
+			
+		var tip_itch = Button.new()
 		tip_itch.set("custom_fonts/font",load("res://font20.tres"))
-		tip_itch.text = itchScript.repo_info
-		
-		var tip_link = Button.new()
-		tip_link.text = "ItchRepo"
-		tip_link.connect("pressed",self,"goto_itch")
-		
+		tip_itch.text = "下载其他版本"
+		tip_itch.connect("pressed",self,"goto_itch")
 		DownLoadPage.get_node("Root").add_child(tip_itch)
-		DownLoadPage.get_node("Root").add_child(tip_link)
-		
 	if node.name == "github":
 # warning-ignore:return_value_discarded
 		OS.shell_open("https://github.com/godotengine/godot")
