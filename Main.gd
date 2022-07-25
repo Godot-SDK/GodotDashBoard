@@ -157,24 +157,10 @@ func cancel_tip(node):
 		#print_debug("开始请求")
 		# warning-ignore:return_value_discarded
 		OS.shell_open("https://godotengine.org/download")
-		#$HTTPRequest.request("https://api.github.com/repos/godotengine/godot/releases",[],true,HTTPClient.METHOD_GET)
 	if node.name == "itch":
 		clean_up_DownloadPage()
-		for key in itchScript.itch_url:
-			var x86 = itchScript.itch_url[key]["32bit"]
-			var x64 = itchScript.itch_url[key]["64bit"]
-			#print_debug(x86)
-			#print_debug(x64)
-			var LineInstance = line.instance()
-			LineInstance.get_node("version").text = key
-			var download_button_32 = LineInstance.get_node("32")
-			var download_button_64 = LineInstance.get_node("64")
-
-			download_button_32.connect("pressed",LineInstance,"_on_button_32_pressed",[x86])
-			download_button_64.connect("pressed",LineInstance,"_on_button_32_pressed",[x64])
-			
-			DownLoadPage.get_node("Root").add_child(LineInstance)
-			
+		create_dwonload_page_and_bind_data(itchScript.itch_url,line)
+		
 		var tip_itch = Button.new()
 		tip_itch.set("custom_fonts/font",load("res://font20.tres"))
 		tip_itch.text = "下载其他版本"
@@ -184,18 +170,8 @@ func cancel_tip(node):
 	if node.name == "github":
 		# warning-ignore:return_value_discarded
 		clean_up_DownloadPage()
-		for key in githubScript.editor_url:
-			var x86 = githubScript.editor_url[key]["32bit"]
-			var x64 = githubScript.editor_url[key]["64bit"]
-			var LineInstance = line.instance()
-			LineInstance.get_node("version").text = key
-			var download_button_32 = LineInstance.get_node("32")
-			var download_button_64 = LineInstance.get_node("64")
-			
-			download_button_32.connect("pressed",LineInstance,"_on_button_32_pressed",[x86])
-			download_button_64.connect("pressed",LineInstance,"_on_button_32_pressed",[x64])
-			DownLoadPage.get_node("Root").add_child(LineInstance)
-			
+		create_dwonload_page_and_bind_data(githubScript.editor_url,line)
+		
 		var tip_github = Button.new()
 		tip_github.set("custom_fonts/font",load("res://font20.tres"))
 		tip_github.text = "下载其他版本"
@@ -218,33 +194,33 @@ func cancel_tip(node):
 	if node.name == "tmux":
 		clean_up_DownloadPage()
 		DownLoadPage.show()
-		#$MainPanel/DownLoadPage/Root/tip_tmux.show()
-		for key in tmuxScript.urls:
-			#url
-			var x86 = tmuxScript.urls[key]["32bit"]
-			var x64 = tmuxScript.urls[key]["64bit"]
-			#print_debug(x86)
-			#print_debug(x64)
-			var LineInstance = line.instance()
-			LineInstance.get_node("version").text = key
-			var download_button_32 = LineInstance.get_node("32")
-			var download_button_64 = LineInstance.get_node("64")
-			
-			download_button_32.connect("pressed",LineInstance,"_on_button_32_pressed",[x86])
-			download_button_64.connect("pressed",LineInstance,"_on_button_32_pressed",[x64])
-			
-			DownLoadPage.get_node("Root").add_child(LineInstance)
-			
+		create_dwonload_page_and_bind_data(tmuxScript.urls,line)
+		
 		var tip_mux = Button.new()
 		tip_mux.set("custom_fonts/font",load("res://font20.tres"))
 		tip_mux.text = "下载其他版本"
 		tip_mux.connect("pressed",self,"goto_tmux")
 		DownLoadPage.get_node("Root").add_child(tip_mux)
-		#OS.shell_open("https://downloads.tuxfamily.org/godotengine")
+		
 	if node.name == "GodotSDK":
-# warning-ignore:return_value_discarded
+		# warning-ignore:return_value_discarded
 		OS.shell_open("https://github.com/Godot-SDK")
 		
+#创建下载gui并绑定数据 line_scene是场景
+func create_dwonload_page_and_bind_data(urls:Dictionary,line_scene):
+	for key in urls:
+		#url
+		var x86 = urls[key]["32bit"]
+		var x64 = urls[key]["64bit"]
+		var LineInstance = line_scene.instance()
+		LineInstance.get_node("version").text = key
+		var download_button_32 = LineInstance.get_node("32")
+		var download_button_64 = LineInstance.get_node("64")
+		download_button_32.connect("pressed",LineInstance,"_on_button_32_pressed",[x86])
+		download_button_64.connect("pressed",LineInstance,"_on_button_32_pressed",[x64])
+		DownLoadPage.get_node("Root").add_child(LineInstance)
+	pass
+	
 func _on_EditorManage_pressed():
 	$repo_source.show()
 	$MainPanel/tip_choose.show()
