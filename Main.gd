@@ -289,7 +289,6 @@ func hide_shequ():
 	SheQuRoot.hide()
 	
 func show_data():
-	#var user_name = "Administrator"
 	var dir = OS.get_executable_path().get_base_dir()
 	var fullpath = dir + "/GetUserName.exe"
 	print_debug("完整可执行文件路径",fullpath)
@@ -307,7 +306,8 @@ func show_data():
 		if err != OK:
 			print_debug("无法打开文件夹")
 	pass
-
+	
+#不同的镜像源官网跳转
 func goto_tmux():
 	OS.shell_open("https://downloads.tuxfamily.org/godotengine")
 	pass
