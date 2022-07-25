@@ -15,12 +15,14 @@ onready var AARLibStand = $AARLibaryStandard
 
 onready var line = load("res://line.tscn")
 onready var aar_line = load("res://aar_line.tscn")
+onready var editorManagerLine = load("res://editorManager_line.tscn")
 
 onready var tmuxScript = load("res://RepoScript/tmux.gd").new()
 onready var githubScript = load("res://RepoScript/github.gd").new()
 onready var giteeScript = load("res://RepoScript/gitee.gd").new()
 onready var itchScript = load("res://RepoScript/itch.gd").new()
 
+onready var EditorManage = $EditorManage2
 
 func _ready():
 	init_editor_dir()
@@ -30,7 +32,8 @@ func _ready():
 	SheQuButton.connect("pressed",self,"show_shequ")
 	engine.connect("pressed",self,"jump_engine")
 	GodotDataButton.connect("pressed",self,"show_data")
-	$HTTPRequest.connect("request_completed",self,"_on_get_complete")
+	#$HTTPRequest.connect("request_completed",self,"_on_get_complete")
+	EditorManage.connect("pressed",self,"show_editor_manage")
 	connect_left_bar()
 	connect_repo_buttons()
 	connect_tween()
@@ -105,6 +108,42 @@ func connect_repo_buttons():
 	
 func show_repo():
 	$repo_source.show()
+	pass
+	
+#管理本地编辑器
+func show_editor_manage():
+	clean_up_DownloadPage()
+	var exe_files = get_downloaded_editors()
+	for file in exe_files:
+		var LineInstance = editorManagerLine.instance()
+		LineInstance.get_node("version").text = file.get_basename()
+		var pop = LineInstance.get_node("MenuButton").get_popup()
+		var full_exe_path = Global.editor_dir + "/" + file
+		print_debug("完整路径:",full_exe_path)
+		pop.connect("id_pressed",LineInstance,"_on_Menu_changed",[full_exe_path])
+		DownLoadPage.get_node("Root").add_child(LineInstance)
+		
+	pass
+	
+func get_downloaded_editors() -> Array:
+	var exe_files = []
+	var dir = Directory.new()
+	if dir.open(Global.editor_dir) == OK:
+		dir.list_dir_begin()
+		var file_name = dir.get_next()
+		while file_name != "":
+			if dir.current_is_dir():
+				print_debug("发现目录：" + file_name)
+				pass
+			else:
+				if file_name.ends_with(".exe"):
+					print_debug("发现exe：" + file_name)
+					exe_files.append(file_name)
+			file_name = dir.get_next()
+	else:
+		print_debug("error")
+		printerr("尝试访问路径时出错。")
+	return exe_files
 	pass
 func hide_repo():
 	$repo_source.hide()
