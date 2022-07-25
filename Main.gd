@@ -146,11 +146,29 @@ func cancel_tip(node):
 		tip_itch.text = "下载其他版本"
 		tip_itch.connect("pressed",self,"goto_itch")
 		DownLoadPage.get_node("Root").add_child(tip_itch)
+		
 	if node.name == "github":
-# warning-ignore:return_value_discarded
-		OS.shell_open("https://github.com/godotengine/godot")
+		# warning-ignore:return_value_discarded
+		clean_up_DownloadPage()
+		for key in githubScript.editor_url:
+			var x86 = githubScript.editor_url[key]["32bit"]
+			var x64 = githubScript.editor_url[key]["64bit"]
+			var LineInstance = line.instance()
+			LineInstance.get_node("version").text = key
+			var download_button_32 = LineInstance.get_node("32")
+			var download_button_64 = LineInstance.get_node("64")
+			
+			download_button_32.connect("pressed",LineInstance,"_on_button_32_pressed",[x86])
+			download_button_64.connect("pressed",LineInstance,"_on_button_32_pressed",[x64])
+			DownLoadPage.get_node("Root").add_child(LineInstance)
+			
+		var tip_github = Button.new()
+		tip_github.set("custom_fonts/font",load("res://font20.tres"))
+		tip_github.text = "下载其他版本"
+		tip_github.connect("pressed",self,"goto_github")
+		DownLoadPage.get_node("Root").add_child(tip_github)
 	if node.name == "gitee":
-# warning-ignore:return_value_discarded
+		# warning-ignore:return_value_discarded
 		clean_up_DownloadPage()
 		DownLoadPage.show()
 		var tip_gitee = Label.new()
@@ -270,5 +288,9 @@ func goto_tmux():
 	
 func goto_gitee():
 	OS.shell_open("https://gitee.com/mirrors/godot")
+	
 func goto_itch():
 	OS.shell_open("https://godotengine.itch.io/godot")
+
+func goto_github():
+	OS.shell_open("https://github.com/godotengine/godot/releases")
